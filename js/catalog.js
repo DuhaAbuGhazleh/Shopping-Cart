@@ -10,9 +10,11 @@ const cart = new Cart([]);
 function populateForm() {
 
   //TODO: Add an <option> tag inside the form's select for each product
-  const selectElement = document.getElementById('items');
+  const itemElement = document.getElementById('items');
   for (let i in Product.allProducts) {
-
+    let option = document.createElement('option');
+    option.textContent = Product.allProducts[i].name;
+    itemElement.appendChild(option);
   }
 
 }
@@ -23,8 +25,14 @@ function populateForm() {
 function handleSubmit(event) {
 
   // TODO: Prevent the page from reloading
-
+  event.preventDefault();
   // Do all the things ...
+  CartItem.product = event.target.items.value;
+
+  CartItem.quantity = event.target.quantity.value;
+
+  
+  count++;
   addSelectedItemToCart();
   cart.saveToLocalStorage();
   updateCounter();
@@ -37,15 +45,31 @@ function addSelectedItemToCart() {
   // TODO: suss out the item picked from the select list
   // TODO: get the quantity
   // TODO: using those, add one item to the Cart
+
+  let item = document.getElementById('items').value;  
+  let  quanity = document.getElementById('quantity').value;  
+  cart.addItem(item, quanity);  
+
 }
 
 // TODO: Update the cart count in the header nav with the number of items in the Cart
-function updateCounter() {}
+let count;
+function updateCounter() {
+
+count = document.getElementById('itemCount');
+    count.textContent = count;
+}
 
 // TODO: As you add items into the cart, show them (item & quantity) in the cart preview div
 function updateCartPreview() {
+  
+ 
   // TODO: Get the item and quantity from the form
-  // TODO: Add a new element to the cartContents div with that information
+  let cartContents = document.getElementById('cartContents');
+  // TODO: Add a new element to the cartContents div with that information 
+  let li = document.createElement('li');
+  cartContents.appendChild(li);
+  li.textContent = `You selected ${CartItem.product} and the amount of product is   ${CartItem.quantity}`;
 }
 
 // Set up the "submit" event listener on the form.
